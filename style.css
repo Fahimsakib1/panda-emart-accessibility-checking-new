@@ -1,0 +1,114 @@
+/* Changing the Image slider Background Color */
+.panda-bg-info{
+    /* background-color: #fceae8; */
+    background-color: #e5e850;
+}
+
+.carousel-inner button{
+    background-color: #ff418c;
+    border-radius: 10px;
+    border: none;
+    width: 130px;
+}
+
+.carousel-inner .image-slider-price{
+    color: #ff418c;
+}
+
+
+/* Changing the Category Section width */
+.categories img{
+    margin-left: 30px;
+}
+
+
+#shoe-section button, #bagpack-section button{
+    background-color: #ff418c;
+    border-radius: 10px;
+    border: none;
+    padding: 9px 25px;
+}
+
+
+/* Shoe Section CSS */
+.panda-text-danger{
+    color:#ff418c ;
+}
+
+/* Subscribe Section CSS */
+
+.panda-bg-warning{
+    background-color: rgb(100, 190, 242);
+}
+
+.subscribe-button:hover{
+    background-color:#ff418c ;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+}
+
+/* Footer Section CSS */
+.get-the-app:hover{
+    color: rgb(69, 69, 248);
+
+}
+
+/* Bag Section Amination CSS */
+.bag-1:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+.bag-2:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+.bag-3:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+
+/* Shoe Section Amination CSS */
+.shoe-1:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+.shoe-2:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+.shoe-3:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+    border: 2px solid rgb(38, 5, 167)
+}
+
+
+
+/* Category Section Animation CSS Starts From Here */
+.watch-category:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+}
+
+.bag-category:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+}
+.shoe-category:hover{
+    transform: scale(1.05);
+    transition: transform 1s ease-in;
+}
+
