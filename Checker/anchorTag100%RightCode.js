@@ -1,3 +1,5 @@
+let totalAnchorTagsWithIssues = [];
+
 anchorTags.each(function () {
     anchorCount++;
     totalLinkScanned++
@@ -6,7 +8,6 @@ anchorTags.each(function () {
     const hrefAttribute = $anchor.attr('href');
     const specialCharRegex = /^[!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-]+$/;
     const containsImage = $anchor.find('img').length > 0;
-
 
     // Lines for having some other tags inside anchor tag
     const containsIcon1 = $anchor.children('i.fab').length > 0;
@@ -40,7 +41,6 @@ anchorTags.each(function () {
         return;
     }
 
-
     // These conditions should be in the third.
     if (altRegexAnchor.test(anchorText.trim())) {
         meaningLessTextInAnchors.push($anchor.toString());
@@ -62,7 +62,6 @@ anchorTags.each(function () {
         console.log('Hi')
     }
 
-
     // These conditions should be in the last. Condition to determine if anchor tag contains icon in it and its issue free.
     if (containsText1 || containsIcon1 || containsIcon2 || containsIcon3 || containsIcon4 || !containsImproperElements) {
         issueFreeAnchors.push($anchor.toString());
@@ -75,6 +74,11 @@ anchorTags.each(function () {
     }
 
 });
+
+
+
+
+
 
 
 
