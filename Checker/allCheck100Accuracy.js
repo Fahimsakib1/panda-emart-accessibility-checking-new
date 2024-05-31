@@ -134,8 +134,8 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
         }).length > 0;
 
 
-        
-        // These conditions should be in the first. Otherwise there will be mismatch. Tokhon Anchor tag er moddhe image thik moto thakleo sehita k refer kore as "no text in anchor tag".
+
+        // These conditions should be in the first. Otherwise there will be mismatch. Tokhon Anchor tag er moddhe image thik moto thakleo sheita k refer kore as "no text in anchor tag".
         if (containsImage) {
             if (!hrefAttribute || hrefAttribute.trim() === '') {
                 emptyHrefInAnchors.push($anchor.toString());
@@ -299,7 +299,7 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
             console.log(singleAnchor);
         });
         if (emptyAnchors.length > 0) {
-            console.log("#### Solution: Add a proper text to the anchor that defines what this anchor tag is about (if proper href is provided)");
+            console.log("#### Solution: Add a proper text to the anchor that defines what this anchor tag is about (if proper href is provided). If there is an icon inside the anchor tag then check the if the aria-hidden provided or not. Do consider writing aria-hidden = 'true'. Also, add a title to the icon that defines what the icon is about");
         }
 
         // empty href in anchor tags
@@ -384,9 +384,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
 
 
 
-
-
-
     const forms = $('form');
     let totalForms = forms.length;
     // totalFormScanned = forms.length;
@@ -399,10 +396,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
 
     let totalLabelsCount = 0;
     let totalLabelsIssueCount = 0;
-
-
-
-
 
 
 
@@ -494,9 +487,11 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
             }
             if (tagName === 'select') {
                 totalSelectTagScanned++;
+                // totalInputFieldScanned++;
             }
             if (tagName === 'textarea') {
                 totalTextareaFieldScanned++;
+                // totalInputFieldScanned++;
             }
         });
 
@@ -557,7 +552,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
         }
 
 
-
         // Label that has same text in the "for" attribute
         if (multipleLabelsWithSameFor.length > 0) {
             console.log('\n')
@@ -571,7 +565,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
             console.log('\n')
             console.log("No multiple labels found that have same name in the 'for' attribute in this form.");
         }
-
 
 
         // Total number of Issues (including all) In Forms
@@ -589,7 +582,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
             console.log('\n')
             console.log("No issue found in this form.");
         }
-
 
 
         // Issue less Form Labels
@@ -614,6 +606,7 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
         console.log("Number of input fields without labels:", inputFieldsWithoutLabels);
         console.log("Total number of labels in this form:", formLabels.length);
         console.log("Total number of issues in this form:", totalIssuesInForms.length);
+
 
         // Increment total counts
         totalInputFieldsCount += totalInputFields;
@@ -731,8 +724,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalUndefinedAltAttributeInImages.push($(this).toString());
-            // console.log("Missing Alt attribute in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Add alt attribute to image tag and give a proper alt attribute name")
         }
 
         else if ((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')) && !(srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' '))) {
@@ -741,8 +732,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptyAltAttributeInImages.push($(this).toString());
-            // console.log("Empty Alt attribute in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Don't put the alt attribute empty and give a proper alt attribute name")
         }
 
 
@@ -752,8 +741,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalUndefinedSrcAttributeInImages.push($(this).toString());
-            // console.log("Missing src attribute in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Add src attribute to image tag and give a proper source to the image")
         }
 
         else if ((srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' ')) && !((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')))) {
@@ -762,8 +749,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptySrcAttributeInImages.push($(this).toString());
-            // console.log("Empty src attribute in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Don't put the src attribute empty and give a proper src attribute name")
         }
 
 
@@ -773,8 +758,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptyAltAndSrcAttributeInImages.push($(this).toString());
-            // console.log("Empty src and alt attribute in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Don't put the src and alt attribute empty and give a proper alt attribute name and add a proper image source")
         }
 
 
@@ -784,8 +767,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalMeaningLessTextInAltAttributeInImages.push($(this).toString());
-            // console.log("Alt attribute contains special characters in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Don't give meaningless/invalid names to alt attribute, give a proper alt attribute name instead")
         }
 
         else if (srcRegex.test(srcAttribute.trim())) {
@@ -794,8 +775,6 @@ function findImagesWithoutAlt(htmlContent) {
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalMeaningLessTextInSrcAttributeInImages.push($(this).toString());
-            // console.log("src attribute of image contains special characters in image tag found in: \n", $(this).toString(), '\n');
-            // console.log("#### Solution: Don't give meaningless/invalid names to the src attribute, give a proper source to the image instead")
         }
 
         else {
@@ -807,7 +786,6 @@ function findImagesWithoutAlt(htmlContent) {
     });
     return { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, totalIssuesInImages };
 }
-
 
 
 
@@ -830,7 +808,6 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
     let totalIssueLessImageTagCount = 0;
     let totalMeaningLessTextInAltCount = 0;
     let totalMeaningLessTextInSrcCount = 0;
-    // let performancePercentageImages;
     htmlContent.forEach((content) => {
         const { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, totalIssuesInImages } = findImagesWithoutAlt(content);
         totalUndefinedAltCount += undefinedAltCount;
@@ -842,8 +819,6 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
         totalMeaningLessTextInAltCount += meaningLessTextInAltCount;
         totalMeaningLessTextInSrcCount += meaningLessTextInSrcCount;
     });
-
-
 
 
 
@@ -972,7 +947,6 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
     }
 
 
-
     if (totalUndefinedAltCount === 0 && totalEmptyAltCount === 0 && totalUndefinedSrcCount === 0 && totalEmptySrcCount === 0 && totalEmptyAltAndSrcCount === 0 && totalIssueLessImageTagCount === 0 && totalMeaningLessTextInAltCount === 0 && totalMeaningLessTextInSrcCount === 0) {
         console.log('\n')
         console.log("Total number of image tags that do not have alt attributes:", 0);
@@ -1029,6 +1003,15 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
     }
 
 
+    
+
+
+
+
+
+
+
+
     // call the function for showing issues of buttons, anchor tags, form label 
     findEmptyButtonsAndEmptyAnchorLink(data);
 
@@ -1042,10 +1025,21 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
     console.log("Total", totalLinkScanned + `${totalLinkScanned > 1 ? ' anchor tags' : ' anchor tag'} found and among them `, totalLinkWithIssuesScanned + `${totalLinkWithIssuesScanned > 1 ? ' anchor tags have' : ' anchor tags has'} issues.... Link Accuracy: `, totalLinkPerformanceScanned);
 
 
-    console.log((`Total ${totalFormScanned} ${totalFormScanned > 1 ? ' forms' : ' form'} found. Total ${totalFormWithIssuesScanned} Issues (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}). Form Accuracy: ${totalFormPerformanceScanned}`))
+    // console.log((`Total ${totalFormScanned} ${totalFormScanned > 1 ? ' forms' : ' form'} found. Total ${totalFormWithIssuesScanned} Issues (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}). Form Accuracy: ${totalFormPerformanceScanned}`))
+
+
+
+
+    console.log((`Total ${totalFormScanned} ${totalFormScanned > 1 ? ' forms' : ' form'} found. Total Input Field Scanned: ${totalInputFieldScanned}. Total Label Scanned: ${totalLabelScanned}`))
+
+    console.log((`Total Select Field Scanned: ${totalSelectTagScanned}, and Total Textarea Field Scanned: ${totalTextareaFieldScanned}`))
+
+    console.log((`Form related total issues ${totalFormWithIssuesScanned} (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}). Overall Form Accuracy: ${totalFormPerformanceScanned}`))
+
 
     let totalElements = totalImageScanned + totalButtonScanned + totalLinkScanned + totalInputFieldScanned + totalLabelScanned + totalSelectTagScanned + totalTextareaFieldScanned;
     console.log("Total Elements (Image, Button, Link, Input, Label): ", totalElements);
+
 
     let totalElementsWithIssues = totalImageWithIssuesScanned + totalButtonWithIssuesScanned + totalLinkWithIssuesScanned + totalInputFieldWithIssuesScanned + totalLabelWithIssuesScanned;
     console.log("Total Elements (Image, Button, Link, Input, Label) with Issues : ", totalElementsWithIssues);
