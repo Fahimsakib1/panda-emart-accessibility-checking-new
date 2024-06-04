@@ -694,8 +694,6 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
 }
 
 
-
-
 // function for checking the issues (Missing alt attribute, Missing src attribute, Empty alt attribute, Empty src attribute, Issue less alt attribute) with alt attributes of image tag
 console.log('\n')
 console.log('*********************** Image Summary ***********************');
