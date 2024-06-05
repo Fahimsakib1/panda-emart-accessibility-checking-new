@@ -788,7 +788,7 @@ function findImagesWithoutAlt(htmlContent) {
 
 
 // Read the file that we want to check accessibility issue
-fs.readFile('../index.html', 'utf8', (err, data) => {
+fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
     if (err) {
         console.error("Error reading file:", err);
         return;
