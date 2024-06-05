@@ -324,8 +324,7 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
         console.log("Total number of image tags that do not have src attributes:", totalUndefinedSrcCount);
         console.log("Total number of image tags with empty src attributes:", totalEmptySrcCount);
         console.log("Total number of meaning less text in src attributes:", totalMeaningLessTextInSrcCount);
-        console.log("Total number of meaning less text in src attributes:", totalEmptyAltAndSrcCount);
-        console.log("Total number of empty alt and  src attributes:", totalMeaningLessTextInSrcCount);
+        console.log("Total number of empty alt and  src attributes:", totalEmptyAltAndSrcCount);
         console.log("Total number of improper image extension in src attribute:", totalInvalidSrcExtensionCount);
         console.log("Total number of image tags that are issue free:", totalIssueLessImageTagCount);
         console.log('\n');
