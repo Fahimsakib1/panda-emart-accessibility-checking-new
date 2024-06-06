@@ -38,6 +38,7 @@ let totalUndefinedSrcAttributeInImages = [] // array for missing alt attributes
 let totalEmptySrcAttributeInImages = []
 let totalMeaningLessTextInSrcAttributeInImages = []
 let totalEmptyAltAndSrcAttributeInImages = []
+let totalInvalidSrcExtensionInImages = []
 let totalNumberOfIssueLessImages = []
 
 
@@ -708,8 +709,17 @@ function findImagesWithoutAlt(htmlContent) {
     let issueLessImageTagCount = 0;
     let meaningLessTextInAltCount = 0;
     let meaningLessTextInSrcCount = 0;
+    let invalidSrcExtensionCount = 0;
+
+
+
     const altRegex = /^[!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-]+$/;
     const srcRegex = /^[!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-]+$/;
+
+
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.pjp', '.pjpeg', '.jfif'];
+
+
 
     imgTags.each(function () {
         totalImageScanned++
@@ -717,72 +727,59 @@ function findImagesWithoutAlt(htmlContent) {
         const srcAttribute = $(this).attr('src');
 
         if (altAttribute === undefined) {
-            // console.log('\n')
             undefinedAltCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalUndefinedAltAttributeInImages.push($(this).toString());
         }
-
-        else if ((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')) && !(srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' '))) {
-            // console.log('\n')
+        else if ((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')) && !(srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' ')) && validExtensions.some(ext => srcAttribute.toLowerCase().endsWith(ext))) {
             emptyAltCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptyAltAttributeInImages.push($(this).toString());
         }
-
-
         else if (srcAttribute === undefined) {
-            // console.log('\n')
             undefinedSrcCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalUndefinedSrcAttributeInImages.push($(this).toString());
         }
-
         else if ((srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' ')) && !((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')))) {
-            // console.log('\n')
             emptySrcCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptySrcAttributeInImages.push($(this).toString());
         }
-
-
         else if ((altAttribute !== undefined && (altAttribute.trim() === "" || altAttribute.trim() === " " || altAttribute.trim() === '' || altAttribute.trim() === ' ')) && (srcAttribute !== undefined && (srcAttribute.trim() === "" || srcAttribute.trim() === " " || srcAttribute.trim() === '' || srcAttribute.trim() === ' '))) {
-            // console.log('\n')
             emptyAltAndSrcCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalEmptyAltAndSrcAttributeInImages.push($(this).toString());
         }
-
-
         else if (altRegex.test(altAttribute.trim())) {
-            // console.log('\n')
             meaningLessTextInAltCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalMeaningLessTextInAltAttributeInImages.push($(this).toString());
         }
-
         else if (srcRegex.test(srcAttribute.trim())) {
-            // console.log('\n')
             meaningLessTextInSrcCount++;
             totalImageWithIssuesScanned++
             totalIssuesInImages.push($(this).toString());
             totalMeaningLessTextInSrcAttributeInImages.push($(this).toString());
         }
-
+        else if (!validExtensions.some(ext => srcAttribute.toLowerCase().endsWith(ext))) {
+            invalidSrcExtensionCount++;
+            totalImageWithIssuesScanned++;
+            totalIssuesInImages.push($(this).toString());
+            totalInvalidSrcExtensionInImages.push($(this).toString());
+        }
         else {
-            // console.log('\n')
             issueLessImageTagCount++;
-            // console.log("Issue less image tag found in: \n", $(this).toString(), '\n');
             totalNumberOfIssueLessImages.push($(this).toString());
         }
     });
-    return { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, totalIssuesInImages };
+    return { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, invalidSrcExtensionCount, totalIssuesInImages };
 }
 
 
@@ -806,8 +803,11 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
     let totalIssueLessImageTagCount = 0;
     let totalMeaningLessTextInAltCount = 0;
     let totalMeaningLessTextInSrcCount = 0;
+    let totalInvalidSrcExtensionCount = 0;
+
+
     htmlContent.forEach((content) => {
-        const { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, totalIssuesInImages } = findImagesWithoutAlt(content);
+        const { undefinedAltCount, emptyAltCount, undefinedSrcCount, emptySrcCount, emptyAltAndSrcCount, issueLessImageTagCount, meaningLessTextInAltCount, meaningLessTextInSrcCount, invalidSrcExtensionCount, totalIssuesInImages } = findImagesWithoutAlt(content);
         totalUndefinedAltCount += undefinedAltCount;
         totalEmptyAltCount += emptyAltCount;
         totalUndefinedSrcCount += undefinedSrcCount;
@@ -816,6 +816,7 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         totalIssueLessImageTagCount += issueLessImageTagCount;
         totalMeaningLessTextInAltCount += meaningLessTextInAltCount;
         totalMeaningLessTextInSrcCount += meaningLessTextInSrcCount;
+        totalInvalidSrcExtensionCount += invalidSrcExtensionCount;
     });
 
 
@@ -833,7 +834,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has missing alt attribute issue.");
     }
 
-
     // Total Empty Alt Attributes In Images
     if (totalEmptyAltAttributeInImages.length > 0) {
         console.log('\n')
@@ -846,7 +846,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log('\n')
         console.log("No Image found that has empty alt attribute.");
     }
-
 
     // Total Meaningless Text in Alt Attributes In Images
     if (totalMeaningLessTextInAltAttributeInImages.length > 0) {
@@ -861,7 +860,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has meaningless alt attribute.");
     }
 
-
     // Total Missing src  Attributes In Images
     if (totalUndefinedSrcAttributeInImages.length > 0) {
         console.log('\n')
@@ -874,7 +872,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log('\n')
         console.log("No Image found that has missing src attribute issue.");
     }
-
 
     // Total Empty src Attributes In Images
     if (totalEmptySrcAttributeInImages.length > 0) {
@@ -889,7 +886,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has empty src attribute.");
     }
 
-
     // Total Meaningless Text in Alt Attributes In Images
     if (totalMeaningLessTextInSrcAttributeInImages.length > 0) {
         console.log('\n')
@@ -903,7 +899,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has meaningless Src attribute.");
     }
 
-
     // Total empty Alt and src Attributes In Images
     if (totalEmptyAltAndSrcAttributeInImages.length > 0) {
         console.log('\n')
@@ -916,6 +911,18 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has empty Alt and src attribute.");
     }
 
+    // Total Invalid Src Extension In Images
+    if (totalInvalidSrcExtensionInImages.length > 0) {
+        console.log('\n');
+        console.log("Total invalid src extension in images :", totalInvalidSrcExtensionInImages.length);
+        totalInvalidSrcExtensionInImages.forEach(singleImage => {
+            console.log(singleImage);
+        });
+        console.log("#### Solution: Add proper src extension like: jpg, png, webp, jpeg, gif, etc.")
+    } else {
+        console.log('\n');
+        console.log("No Image found that has invalid src extension.");
+    }
 
     // Total Issue In Images
     if (totalIssuesInImages.length > 0) {
@@ -931,7 +938,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("No Image found that has issue.");
     }
 
-
     // Total number of Issueless Images
     if (totalNumberOfIssueLessImages.length > 0) {
         console.log('\n')
@@ -945,7 +951,7 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
     }
 
 
-    if (totalUndefinedAltCount === 0 && totalEmptyAltCount === 0 && totalUndefinedSrcCount === 0 && totalEmptySrcCount === 0 && totalEmptyAltAndSrcCount === 0 && totalIssueLessImageTagCount === 0 && totalMeaningLessTextInAltCount === 0 && totalMeaningLessTextInSrcCount === 0) {
+    if (totalUndefinedAltCount === 0 && totalEmptyAltCount === 0 && totalUndefinedSrcCount === 0 && totalEmptySrcCount === 0 && totalEmptyAltAndSrcCount === 0 && totalIssueLessImageTagCount === 0 && totalMeaningLessTextInAltCount === 0 && totalMeaningLessTextInSrcCount === 0 && totalInvalidSrcExtensionCount === 0) {
         console.log('\n')
         console.log("Total number of image tags that do not have alt attributes:", 0);
         console.log("Total number of image tags with empty alt attributes:", 0);
@@ -955,11 +961,13 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("Total number of image tags with empty src attribute:", 0);
         console.log("Total number of meaning less text in src attribute:", 0);
 
+
+        console.log("Total number of issues related to src extension on image:", 0);
+
         console.log("Total number of image tags that are issue free:", 0);
     } else {
 
         // Calculate performance percentage of Images
-        // const totalImages = totalUndefinedAltCount + totalEmptyAltCount + totalIssueLessImageTagCount + totalMeaningLessTextInAltCount;
         const totalImages = totalImageScanned;
         const issueFreeImages = totalIssueLessImageTagCount;
         const totalIssues = totalImages - issueFreeImages;
@@ -981,8 +989,8 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
         console.log("Total number of image tags that do not have src attributes:", totalUndefinedSrcCount);
         console.log("Total number of image tags with empty src attributes:", totalEmptySrcCount);
         console.log("Total number of meaning less text in src attributes:", totalMeaningLessTextInSrcCount);
-        console.log("Total number of meaning less text in src attributes:", totalEmptyAltAndSrcCount);
-        console.log("Total number of empty alt and  src attributes:", totalMeaningLessTextInSrcCount);
+        console.log("Total number of empty alt and  src attributes:", totalEmptyAltAndSrcCount);
+        console.log("Total number of improper image extension in src attribute:", totalInvalidSrcExtensionCount);
         console.log("Total number of image tags that are issue free:", totalIssueLessImageTagCount);
         console.log('\n');
         console.log("Total", totalImages + " Images found and among them ", totalIssues + `${totalIssues > 1 ? '  Images have' : ' Image has'} issues`);
@@ -1001,13 +1009,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
     }
 
 
-    
-
-
-
-
-
-
 
 
     // call the function for showing issues of buttons, anchor tags, form label 
@@ -1021,11 +1022,6 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
     console.log("Total", totalButtonScanned + `${totalButtonScanned > 1 ? ' buttons' : ' button'} found and among them `, totalButtonWithIssuesScanned + `${totalButtonWithIssuesScanned > 1 ? ' buttons have' : ' button has'} issues.... Button Accuracy: `, totalButtonPerformanceScanned);
 
     console.log("Total", totalLinkScanned + `${totalLinkScanned > 1 ? ' anchor tags' : ' anchor tag'} found and among them `, totalLinkWithIssuesScanned + `${totalLinkWithIssuesScanned > 1 ? ' anchor tags have' : ' anchor tags has'} issues.... Link Accuracy: `, totalLinkPerformanceScanned);
-
-
-    // console.log((`Total ${totalFormScanned} ${totalFormScanned > 1 ? ' forms' : ' form'} found. Total ${totalFormWithIssuesScanned} Issues (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}). Form Accuracy: ${totalFormPerformanceScanned}`))
-
-
 
 
     console.log((`Total ${totalFormScanned} ${totalFormScanned > 1 ? ' forms' : ' form'} found. Total Input Field Scanned: ${totalInputFieldScanned}. Total Label Scanned: ${totalLabelScanned}`))

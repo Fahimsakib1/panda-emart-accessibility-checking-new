@@ -245,8 +245,6 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
         console.log("No Image found that has empty Alt and src attribute.");
     }
 
-
-
     // Total Invalid Src Extension In Images
     if (totalInvalidSrcExtensionInImages.length > 0) {
         console.log('\n');
@@ -259,8 +257,6 @@ fs.readFile('../index.html', 'utf8', (err, data) => {
         console.log('\n');
         console.log("No Image found that has invalid src extension.");
     }
-
-
 
     // Total Issue In Images
     if (totalIssuesInImages.length > 0) {
