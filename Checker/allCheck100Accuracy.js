@@ -488,11 +488,11 @@ function findEmptyButtonsAndEmptyAnchorLink(htmlContent) {
             }
             if (tagName === 'select') {
                 totalSelectTagScanned++;
-                // totalInputFieldScanned++;
+                totalInputFieldScanned++;
             }
             if (tagName === 'textarea') {
                 totalTextareaFieldScanned++;
-                // totalInputFieldScanned++;
+                totalInputFieldScanned++;
             }
         });
 
@@ -785,7 +785,7 @@ function findImagesWithoutAlt(htmlContent) {
 
 
 // Read the file that we want to check accessibility issue
-fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
+fs.readFile('../index.html', 'utf8', (err, data) => {
     if (err) {
         console.error("Error reading file:", err);
         return;
@@ -1028,14 +1028,44 @@ fs.readFile('../mainTestScriptFile.html', 'utf8', (err, data) => {
 
     console.log((`Total Select Field Scanned: ${totalSelectTagScanned}, and Total Textarea Field Scanned: ${totalTextareaFieldScanned}`))
 
-    console.log((`Form related total issues ${totalFormWithIssuesScanned} (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}). Overall Form Accuracy: ${totalFormPerformanceScanned}`))
+
+
+    
+    
+    
+
+    
+    
+    
+    
+    console.log((`Form related total issues ${totalFormWithIssuesScanned + (totalInputFieldScanned - totalLabelScanned)} (Input Field Issue: ${totalInputFieldWithIssuesScanned}, Label Issue: ${totalLabelWithIssuesScanned}, Missing Label: ${totalInputFieldScanned - totalLabelScanned}). Overall Form Accuracy: ${totalFormPerformanceScanned}`))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     let totalElements = totalImageScanned + totalButtonScanned + totalLinkScanned + totalInputFieldScanned + totalLabelScanned + totalSelectTagScanned + totalTextareaFieldScanned;
     console.log("Total Elements (Image, Button, Link, Input, Label): ", totalElements);
 
 
-    let totalElementsWithIssues = totalImageWithIssuesScanned + totalButtonWithIssuesScanned + totalLinkWithIssuesScanned + totalInputFieldWithIssuesScanned + totalLabelWithIssuesScanned;
+    let totalMissingLabelsInInputFields = totalInputFieldScanned - totalLabelScanned
+    
+    
+    let totalElementsWithIssues = totalImageWithIssuesScanned + totalButtonWithIssuesScanned + totalLinkWithIssuesScanned + totalInputFieldWithIssuesScanned + totalLabelWithIssuesScanned + totalMissingLabelsInInputFields;
     console.log("Total Elements (Image, Button, Link, Input, Label) with Issues : ", totalElementsWithIssues);
 
     let overallPerformancePercentage = ((totalElements - totalElementsWithIssues) / totalElements * 100).toFixed(2) + '%';
